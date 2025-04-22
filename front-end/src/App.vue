@@ -1,6 +1,5 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+  books = ref([ { title: 'Lost World', author: 'Joe Blow'}, { title: 'Ender Game', author: 'Card'}])
 </script>
 
 <template>
@@ -8,12 +7,12 @@ import TheWelcome from './components/TheWelcome.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <h2>Hi</h2>
     </div>
   </header>
 
   <main>
-    <TheWelcome />
+    <h4>Yo</h4>
   </main>
 </template>
 

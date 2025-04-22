@@ -13,3 +13,59 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Customer {
+  cust_id             Int          @id @default(autoincrement())
+  first_name          String
+  last_name           String
+  late_returned_count Int
+  BookOrders          BookOrders[]
+  Waitlist            Waitlist[]
+}
+
+model Location {
+  location_id   Int          @id @default(autoincrement())
+  location_name String
+  Inventory     Inventory[]
+  BookOrders    BookOrders[]
+  Waitlist      Waitlist[]
+}
+
+model Book {
+  book_id    Int          @id @default(autoincrement())
+  book_name  String
+  Inventory  Inventory[]
+  BookOrders BookOrders[]
+  Waitlist   Waitlist[]
+}
+
+model Inventory {
+  inventory_id    Int      @id @default(autoincrement())
+  available_count Int
+  total_count     Int
+  location        Location @relation(fields: [fk_location_id], references: [location_id])
+  fk_location_id  Int
+  book            Book     @relation(fields: [fk_book_id], references: [book_id])
+  fk_book_id      Int
+}
+
+model BookOrders {
+  order_id       Int      @id @default(autoincrement())
+  loan_length    Int
+  customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
+  fk_cust_id     Int
+  location       Location @relation(fields: [fk_location_id], references: [location_id])
+  fk_location_id Int
+  book           Book     @relation(fields: [fk_book_id], references: [book_id])
+  fk_book_id     Int
+}
+
+model Waitlist {
+  waitlist_id    Int      @id @default(autoincrement())
+  customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
+  fk_cust_id     Int
+  location       Location @relation(fields: [fk_location_id], references: [location_id])
+  fk_location_id Int
+  book           Book     @relation(fields: [fk_book_id], references: [book_id])
+  fk_book_id     Int
+}
