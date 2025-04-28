@@ -21,6 +21,7 @@ model Customer {
   late_returned_count Int
   BookOrders          BookOrders[]
   Waitlist            Waitlist[]
+  Wishlist            Wishlist[]
 }
 
 model Location {
@@ -29,14 +30,24 @@ model Location {
   Inventory     Inventory[]
   BookOrders    BookOrders[]
   Waitlist      Waitlist[]
+  Wishlist      Wishlist[]
 }
 
 model Book {
-  book_id    Int          @id @default(autoincrement())
-  book_name  String
-  Inventory  Inventory[]
-  BookOrders BookOrders[]
-  Waitlist   Waitlist[]
+  book_id         Int          @id @default(autoincrement())
+  book_name       String
+  author          Author       @relation(fields: [fk_author_id], references: [author_id])
+  fk_author_id    Int
+  genre           Genre        @relation(fields: [fk_genre_id], references: [genre_id])
+  fk_genre_id     Int
+  language        Languages    @relation(fields: [fk_language_id], references: [language_id])
+  fk_language_id  Int
+  publisher       Publisher    @relation(fields: [fk_publisher_id], references: [publisher_id])
+  fk_publisher_id Int
+  Inventory       Inventory[]
+  BookOrders      BookOrders[]
+  Waitlist        Waitlist[]
+  Wishlist        Wishlist[]
 }
 
 model Inventory {
@@ -68,4 +79,38 @@ model Waitlist {
   fk_location_id Int
   book           Book     @relation(fields: [fk_book_id], references: [book_id])
   fk_book_id     Int
+}
+
+model Author {
+  author_id      Int      @id @default(autoincrement())
+  author_name    String
+  Book           Book[]
+}
+
+model Genre {
+  genre_id      Int       @id @default(autoincrement())
+  genre_name    String
+  Book          Book[]
+}
+
+model Wishlist {
+  waitlist_id    Int      @id @default(autoincrement())
+  customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
+  fk_cust_id     Int
+  location       Location @relation(fields: [fk_location_id], references: [location_id])
+  fk_location_id Int
+  book           Book     @relation(fields: [fk_book_id], references: [book_id])
+  fk_book_id     Int
+}
+
+model Languages {
+  language_id      Int       @id @default(autoincrement())
+  language_name    String
+  Book             Book[]
+}
+
+model Publisher {
+  publisher_id      Int       @id @default(autoincrement())
+  publisher_name    String
+  Book              Book[]
 }

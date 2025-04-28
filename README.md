@@ -2,20 +2,22 @@
 
 # back-end
 
-Before running this, you will need an .env file to connect to a database.  Get it from someone if you don't have it already.
+Before running, you will need an .env file to connect to the database.
 
-Go to /library/back-end in a terminal (such as bash, powershell may not work)
+The .env file must have the following line: DATABASE_URL="mysql://anr486:infsci2710_4780076@159.65.239.201:3306/anr486"
 
-run `npm i` to install the node packages needed to run the back end.
+Go to /library/back-end in a terminal (such as bash, powershell may not work).
 
-run `npx prisma generate` to create the files for Prisma, which is an ORM.
+Run `npm i` to install the node packages needed to run the back end.
 
- and type `npm start` and the server will run on localhost:3000.  Let me know if you need to change this.
+Run `npx prisma generate` to create the files for Prisma, which is an ORM.
+
+Type `npm start` and the server will run on localhost:3000.
 
 # front-end-1
 
-Go to /library/front-end-1 in a terminal (such as bash, powershell may not work)
+Go to /library/front-end-1 in a terminal (such as bash, powershell may not work).
 
-run `npm i` to install the node packages needed to run the front end.
+Run `npm i` to install the node packages needed to run the front end.
 
-type `npm run dev` to get the server going on localhost:5173.  Let me know if you need to change the url.
+Type `npm run dev` to get the server going on localhost:5173.
