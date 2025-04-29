@@ -1,11 +1,20 @@
 import axios from 'axios';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
   const [bookData, setBookData] = useState(null)
+  const [allInventory, setAllInventory] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/all-inventory')
+      .then(response => {
+        console.log(response.data);
+        setAllInventory(response.data);
+      })
+  }, [])
 
   const handleChange = event => {
     setSearchTerm(event.target.value);
@@ -68,32 +77,56 @@ function App() {
       });
   }
 
+  const renderItemButton = (item) => {
+    if (item.available_count > 0) {
+      return (
+        <button style={{ backgroundColor: 'lightgreen'}} onClick={checkout}>Checkout</button>
+      )
+    }
+
+    return (
+      <button style={{ backgroundColor: 'lightyellow'}} onClick={checkout}>Join Waitlist</button>
+    )
+  }
+
+  const renderInventoryItem = (item) => {
+    return (
+      <tr key={item.inventory_id}>
+        <td>{item.book.book_name}</td>
+        <td>{item.book.author.author_name}</td>
+        <td>{item.book.genre.genre_name}</td>
+        <td>{item.book.language.language_name}</td>
+        <td>{item.book.publisher.publisher_name}</td>
+        <td>{item.location.location_name}</td>
+        <td>{item.available_count}</td>
+        <td>{renderItemButton(item)}</td>
+      </tr>
+    )
+  }
+
   return (
     <>
-      <input type="text" onChange={handleChange} value={searchTerm} />
-      <button onClick={search}>Search</button>
-      <button onClick={checkout}>Checkout</button>
-      <button onClick={wishlist}>Wishlist</button>
-      { bookData &&
-        <table>
+      <input type="text" style={{ width: '25%', margin: '5%'}} onChange={handleChange} placeholder='Type here to add a book to the wishlist' value={searchTerm} />
+      {/* <button onClick={search}>Search</button>
+      <button onClick={checkout}>Checkout</button> */}
+      <button onClick={wishlist} style={{ backgroundColor: 'aqua'}}>Add to Wishlist</button>
+      { allInventory.length > 0 &&
+        <table style={{ margin: '3%'}}>
           <tr>
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
             <th>Language</th>
             <th>Publisher</th>
+            <th>Location</th>
+            <th>Copies Available</th>
+            <th></th>
           </tr>
-          <tr>
-            <td>{bookData.book_name}</td>
-            <td>{bookData.author_name}</td>
-            <td>{bookData.genre_name}</td>
-            <td>{bookData.language_name}</td>
-            <td>{bookData.publisher_name}</td>
-          </tr>
+          { allInventory.map(item => renderInventoryItem(item))}
         </table>
       }
-      { !bookData && 
-          <div>Type in a book name to find it</div>
+      { allInventory.length == 0 && 
+          <div>Wow it looks like there are no books</div>
       }
     </>
   )

@@ -10,6 +10,23 @@ app.use(function(req, res, next) {
 	next();
   });
 
+app.get('/all-inventory', async (req, res) => {
+	const allInventory = await prisma.inventory.findMany({
+		include: {
+			book: {
+				include: {
+					author: true,
+					genre: true,
+					language: true,
+					publisher: true
+				}
+			},
+			location: true
+		}
+	});
+	res.json(allInventory);
+})
+
 app.get('/find-book/:book_name', async (req, res) => {
 	const book = await prisma.book.findFirst({
 		where: { book_name: req.params.book_name },
