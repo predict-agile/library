@@ -19,7 +19,7 @@ model Customer {
   first_name          String
   last_name           String
   late_returned_count Int
-  BookOrders          BookOrders[]
+  BookOrder           BookOrder[]
   Waitlist            Waitlist[]
   Wishlist            Wishlist[]
 }
@@ -28,7 +28,7 @@ model Location {
   location_id   Int          @id @default(autoincrement())
   location_name String
   Inventory     Inventory[]
-  BookOrders    BookOrders[]
+  BookOrder     BookOrder[]
   Waitlist      Waitlist[]
   Wishlist      Wishlist[]
 }
@@ -45,7 +45,7 @@ model Book {
   publisher       Publisher    @relation(fields: [fk_publisher_id], references: [publisher_id])
   fk_publisher_id Int
   Inventory       Inventory[]
-  BookOrders      BookOrders[]
+  BookOrder       BookOrder[]
   Waitlist        Waitlist[]
   Wishlist        Wishlist[]
 }
@@ -60,7 +60,7 @@ model Inventory {
   fk_book_id      Int
 }
 
-model BookOrders {
+model BookOrder {
   order_id       Int      @id @default(autoincrement())
   loan_length    Int
   customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
@@ -94,7 +94,7 @@ model Genre {
 }
 
 model Wishlist {
-  waitlist_id    Int      @id @default(autoincrement())
+  wishlist_id    Int      @id @default(autoincrement())
   customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
   fk_cust_id     Int
   location       Location @relation(fields: [fk_location_id], references: [location_id])
