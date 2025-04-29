@@ -54,6 +54,8 @@ app.get('/find-book/:book_name', async (req, res) => {
 			language_name: language_name,
 			publisher_name: publisher_name
 		})
+	} else {
+		res.status(404).json({message: `Could not find ${req.params.book_name}` })
 	}
   })
 
@@ -87,10 +89,12 @@ app.get('/checkout-book/:book_name', async (req, res) => {
 				res.json({message: book.book_name + " added to waitlist"})
 			}
 		}
+	} else {
+		res.status(404).json({message: `Could not find ${req.params.book_name}` })
 	}
   })
 
-  app.get('/checkout-book/:book_name', async (req, res) => {
+  app.get('/wishlist-book/:book_name', async (req, res) => {
 	const book = await prisma.book.findFirst({
 		where: { book_name: req.params.book_name },
 	})
@@ -105,6 +109,8 @@ app.get('/checkout-book/:book_name', async (req, res) => {
 			}
 		})
 		res.json({message: book.book_name + " added to wishlist"})
+	} else {
+		res.status(404).json({message: `Could not find ${req.params.book_name}` })
 	}
   })
 

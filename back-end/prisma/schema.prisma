@@ -94,7 +94,7 @@ model Genre {
 }
 
 model Wishlist {
-  waitlist_id    Int      @id @default(autoincrement())
+  wishlist_id    Int      @id @default(autoincrement())
   customer       Customer @relation(fields: [fk_cust_id], references: [cust_id])
   fk_cust_id     Int
   location       Location @relation(fields: [fk_location_id], references: [location_id])

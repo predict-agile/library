@@ -24,7 +24,11 @@ function App() {
       })
       .catch(error => {
         console.log(error);
-        alert(`Had trouble connecting`);
+        if (error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert(`Had trouble connecting`);
+        }
       });
   }
 
@@ -38,7 +42,11 @@ function App() {
         }
       })
       .catch(error => {
-        alert(`Had trouble connecting`);
+        if (error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert(`Had trouble connecting`);
+        }
       });
   }
 
@@ -52,7 +60,11 @@ function App() {
         }
       })
       .catch(error => {
-        alert(`Had trouble connecting`);
+        if (error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert(`Had trouble connecting`);
+        }
       });
   }
 
