@@ -71,6 +71,16 @@ app.get('/checkout-book/:book_name', async (req, res) => {
 
 		if (findInventory != null) {
 			if (findInventory.available_count > 0) {
+				const order = await prisma.bookOrder.create({
+					data: {
+						order_id: 1,
+						loan_length: 7,
+						fk_cust_id: 1,
+						fk_location_id: 1,
+						fk_book_id: book.book_id,
+					}
+				})
+
 				const updateInventory = await prisma.inventory.update({
 					where: {inventory_id: findInventory.inventory_id},
 					data: {available_count: {increment: -1}},
