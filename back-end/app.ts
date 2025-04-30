@@ -90,7 +90,7 @@ app.get('/checkout-book/:book_name', async (req, res) => {
 			if (findInventory.available_count > 0) {
 				const order = await prisma.bookOrder.create({
 					data: {
-						order_id: 1,
+						order_id: Math.floor(Math.random()*100000),
 						loan_length: 7,
 						fk_cust_id: 1,
 						fk_location_id: 1,
@@ -107,7 +107,7 @@ app.get('/checkout-book/:book_name', async (req, res) => {
 			else {
 				const waitlist = await prisma.waitlist.create({
 					data: {
-						waitlist_id: 1,
+						waitlist_id: Math.floor(Math.random()*100000),
 						fk_cust_id: 1,
 						fk_location_id: 1,
 						fk_book_id: book.book_id,
@@ -122,23 +122,34 @@ app.get('/checkout-book/:book_name', async (req, res) => {
   })
 
   app.get('/wishlist-book/:book_name', async (req, res) => {
-	const book = await prisma.book.findFirst({
+	let book = await prisma.book.findFirst({
 		where: { book_name: req.params.book_name },
 	})
-	
-	if (book != null) {
-		const wishlist = await prisma.wishlist.create({
+
+	// if we had all the time in the world, there'd be some front end
+	// component to specify genre, author, language, etc
+	if (!book) {
+		book = await prisma.book.create({
 			data: {
-				wishlist_id: 1,
-				fk_cust_id: 1,
-				fk_location_id: 1,
-				fk_book_id: book.book_id,
-			}
+				book_id: Math.floor(Math.random()*100000),
+				book_name: req.params.book_name,
+				fk_author_id: 1,
+				fk_genre_id: 1,
+				fk_language_id: 1,
+				fk_publisher_id: 1
+			} 
 		})
-		res.json({message: book.book_name + " added to wishlist"})
-	} else {
-		res.status(404).json({message: `Could not find ${req.params.book_name}` })
 	}
+	
+	const wishlist = await prisma.wishlist.create({
+		data: {
+			wishlist_id: Math.floor(Math.random()*100000),
+			fk_cust_id: 1,
+			fk_location_id: 1,
+			fk_book_id: book.book_id,
+		}
+	})
+	res.json({message: book.book_name + " added to wishlist"})
   })
 
 const server = app.listen(3000)

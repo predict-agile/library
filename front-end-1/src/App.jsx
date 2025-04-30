@@ -41,13 +41,19 @@ function App() {
       });
   }
 
-  const checkout = () => {
-    axios.get(`http://localhost:3000/checkout-book/${searchTerm}`)
+  const checkout = (item) => {
+    axios.get(`http://localhost:3000/checkout-book/${item.book.book_name}`)
       .then(response => {
         if (response.data) {
           alert(response.data.message);
+
+          axios.get('http://localhost:3000/all-inventory')
+          .then(response => {
+            console.log(response.data);
+            setAllInventory(response.data);
+          })
         } else {
-          alert(`Could not find ${searchTerm}`);
+          alert(`Could not find ${item.book.book_name}`);
         }
       })
       .catch(error => {
@@ -80,12 +86,12 @@ function App() {
   const renderItemButton = (item) => {
     if (item.available_count > 0) {
       return (
-        <button style={{ backgroundColor: 'lightgreen'}} onClick={checkout}>Checkout</button>
+        <button style={{ backgroundColor: 'lightgreen'}} onClick={() => checkout(item)}>Checkout</button>
       )
     }
 
     return (
-      <button style={{ backgroundColor: 'lightyellow'}} onClick={checkout}>Join Waitlist</button>
+      <button style={{ backgroundColor: 'lightyellow'}} onClick={() => checkout(item)}>Join Waitlist</button>
     )
   }
 
